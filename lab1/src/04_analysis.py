@@ -22,7 +22,7 @@ result2 = (
     .groupby("region")
     .agg(
         avg_level=("air_general_level", "mean"),
-        cities_count=("city", "count")
+        cities_count=("city", "nunique")
     )
     .reset_index()
     .sort_values("avg_level", ascending=False)
