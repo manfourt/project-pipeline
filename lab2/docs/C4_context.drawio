@@ -1,0 +1,58 @@
+<mxfile host="Electron">
+  <diagram id="c4ctx" name="C4 Context">
+    <mxGraphModel dx="1258" dy="885" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;" value="&lt;b&gt;Контекстная диаграмма (C4, уровень 1): Data Pipeline качества воздуха&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="800" x="185" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="api" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#999999;strokeColor=#8A8A8A;fontColor=#ffffff;arcSize=8;fontSize=12;" value="&lt;b&gt;Open-Meteo Air Quality API&lt;/b&gt;&lt;br&gt;[Внешняя система]&lt;br&gt;&lt;br&gt;Почасовые концентрации загрязнителей по координатам (модель CAMS)" vertex="1">
+          <mxGeometry height="110" width="300" x="80" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="lab1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#999999;strokeColor=#8A8A8A;fontColor=#ffffff;arcSize=8;fontSize=12;" value="&lt;b&gt;MinIO, bucket eco-data&lt;/b&gt;&lt;br&gt;[Внешняя система — лаб. работа 1]&lt;br&gt;&lt;br&gt;Датасет о загрязнении воздуха в городах России (Parquet)" vertex="1">
+          <mxGeometry height="110" width="300" x="790" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="sys" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1168BD;strokeColor=#0B4884;fontColor=#ffffff;arcSize=8;fontSize=13;" value="&lt;b&gt;Data Pipeline качества воздуха&lt;/b&gt;&lt;br&gt;[Программная система, Python]&lt;br&gt;&lt;br&gt;Загружает данные через REST API, очищает и преобразует их, сохраняет в хранилище и строит аналитику" vertex="1">
+          <mxGeometry height="130" width="330" x="420" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="store" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#999999;strokeColor=#8A8A8A;fontColor=#ffffff;arcSize=8;fontSize=12;" value="&lt;b&gt;MinIO, bucket air-quality&lt;/b&gt;&lt;br&gt;[Внешняя система — S3-хранилище]&lt;br&gt;&lt;br&gt;Зоны raw/, processed/, analytics/" vertex="1">
+          <mxGeometry height="110" width="300" x="80" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="user" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#08427B;strokeColor=#052E56;fontColor=#ffffff;arcSize=37;fontSize=12;" value="&lt;b&gt;Аналитик данных&lt;/b&gt;&lt;br&gt;[Пользователь]&lt;br&gt;&lt;br&gt;Оценивает экологическое состояние крупных городов России" vertex="1">
+          <mxGeometry height="130" width="240" x="820" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="api" style="endArrow=classic;html=1;dashed=1;strokeColor=#707070;fontSize=11;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;" target="sys" value="Запрашивает почасовые данные PM2.5, PM10,&amp;nbsp;&lt;div&gt;CO, NO2, SO2, O3 и US AQI за 2023–2024&lt;br&gt;[REST API, HTTPS, JSON]&lt;/div&gt;">
+          <mxGeometry relative="1" x="-0.1642" y="25" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="530" y="145" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="lab1" style="endArrow=classic;html=1;dashed=1;strokeColor=#707070;fontSize=11;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;" target="sys" value="Забирает 20 крупнейших городов&amp;nbsp;&lt;div&gt;и их координаты&lt;br&gt;[S3 API, Parquet]&lt;/div&gt;">
+          <mxGeometry relative="1" x="0.2239" y="20" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="640" y="145" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="sys" style="endArrow=classic;html=1;dashed=1;strokeColor=#707070;fontSize=11;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;" target="store" value="Выгружает исходный JSON,&amp;nbsp;&lt;div&gt;обработанные данные и результаты анализа&lt;br&gt;[S3 API, JSON, Parquet]&lt;/div&gt;">
+          <mxGeometry relative="1" x="-0.038" y="-25" as="geometry">
+            <mxPoint x="25" y="-25" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="sys" style="endArrow=classic;html=1;dashed=1;strokeColor=#707070;fontSize=11;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="7_FB5MaLY3vruoE0uPy3-3" value="Получает рейтинг городов по загрязнению, динамику NO2 и SO2 по годам,&amp;nbsp;&lt;div&gt;сезонность PM2.5&amp;nbsp;&lt;span style=&quot;background-color: light-dark(rgb(255, 255, 255), rgb(18, 18, 18)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;и графики — для оценки качества воздуха&lt;/span&gt;&lt;div&gt;[Parquet, PNG]&lt;/div&gt;&lt;/div&gt;">
+          <mxGeometry relative="1" x="0.2459" y="27" as="geometry">
+            <mxPoint x="-17" y="-25" as="offset" />
+            <mxPoint x="940" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_FB5MaLY3vruoE0uPy3-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#08427B;strokeColor=#052E56;fontColor=#ffffff;arcSize=50;fontSize=12;" value="" vertex="1">
+          <mxGeometry height="90" width="90" x="895" y="510" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
